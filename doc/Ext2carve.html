@@ -1,0 +1,225 @@
+<html>
+<head>
+<title>Basic Data Carving Test #2</title>
+</head>
+<body bgcolor="#FFFFCC">
+<center>
+  <h2>Basic Data Carving Test #2</h2>
+  <b>(by Nick Mikus)</b><br>
+  <h3>Digital Forensics Tool Testing Image (#12)</h3>
+  <a href="http://dftt.sourceforge.net/"> http://dftt.sourceforge.net</a> 
+</center>
+<h3>Introduction</h3>
+
+<p> This test image is an EXT2 file system and is intended to test data carving 
+  tools for indirect block detection and removal.  With large files, EXT2 allocates blocks (called indirect blocks) to store
+file metadata and the blocks are frequently allocated in between blocks that contain file content.  Therefore, the file becomes fragmented and a basic carving tool may include the indirect block in the carved file.  This file system image contains
+  several allocated and deleted files, none of which have been
+  modified.  This image was created from a USB thumb drive that was
+  wiped clean and formatted using the <tt>mkfs.ext2</tt> program.
+  The super block has been corrupted so that the image cannot be
+  mounted and therefore data carving methods must be used to extract
+  the files.</p>
+
+<h3>Download</h3>
+<p> This test image is a 'raw' partition image (i.e. 'dd') of an EXT2 file system. 
+  The file system is 124MB and is compressed to 1.1MB. The MD5 of the image is 
+  <tt>6cbd2c5248fa7030d699eb6cde051623</tt>. This image is released under the <a href="http://www.gnu.org/licenses/licenses.html#GPL"> 
+  GPL</a>, so anyone can use it. </p>
+<ul>
+  <li><a href="http://prdownloads.sourceforge.net/dftt/12-carve-ext2.zip?download">zip</a> </li>
+</ul>
+<h3>Files</h3>
+<p> The following files exist in the image.  The sectors marked as "(IND)" and "(DIND)" represent the indirect and double indirect block pointer locations.</p>
+
+<div align=center> 
+  <table class=MsoNormalTable border=1 cellpadding=0 width="103%">
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>Num</span></b></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>Name</span></b></p></td>
+      <td width=256> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>MD5</span></b></p></td>
+      <td width=48 valign=top> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>Size</span></b></p></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>Note</span></b></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><b><span
+  style='font-size:10.0pt'>Sectors</span></b></p></td>
+    </tr>
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>1</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>haxor2.bmp </span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>f9633fe6b9ef2a0a5edd6de70d22c0f5</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>163878</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A deleted BMP</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5162-5184, (IND):5186, (24-320):5188-5484</span></p></td>
+    </tr>
+
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>2</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>jimmy.doc</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>2f3f914dd74819df42d1d941c7275c16</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>12800</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A deleted DOC</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5486-5508, (IND):5510, (24):5512</span></p></td>
+    </tr>
+
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>3</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>jn.jpg</span></p></td>
+      <td width=256> <pre style='text-align:center'>270a0a913fa9603db8121fdf78d63aca</pre></td>
+      <td width=48 valign=top> <pre style='text-align:center'>28949</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid JPG</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5514-5536, (IND):5538, (24-56):5540-5572</span></p></td>
+    </tr>
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>4</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>lin_test.pdf</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>1c64456776075d1f0a662e1f6c09e340</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>26618</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid PDF</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5574-5596, (IND):5598, (24-50):5600-5626</span></p></td>
+    </tr>
+
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>5</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>main_dive.jpg</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>937846adb96773ee25fcb34821230976</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>8463</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid jpeg</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-16):5628-5644</span></p></td>
+    </tr>
+
+    <tr> 
+      <td width=46> 
+        <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>6</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>n_lin_ss.pdf</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>97be95ed3e710b63bc75e5c0775062d9</pre></td>
+      <td width=48 valign=center> <pre
+  style='text-align:center'>734652</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid pdf</span></p></td>
+      <td width=525 valign=center> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5646-5668, (IND):5670, (24-534):5672-6182, (DIND):6184, 
+          (IND):6186, (536-1046):6188-6698, (IND):6700, (1048-1434)6702-7088</span></p>
+        </td>
+    </tr>
+
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>7</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>blogo.gif</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>5e10b2176016885a85bffc074a142524</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>18663</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid gif</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):5122-5144, (IND):5146, (24-36):5148-5160</span></p></td>
+    </tr>
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>8</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>sherry.jpg</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>3834e72d2ee266ccfb9733d716b89f2b</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>133249</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid JPEG</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):7090-7112, (IND):7114, (24-260):7116-7352</span></p></td>
+    </tr>
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>9</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>stats.xls</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>6351df9c1543c41c3df8eea63e06a219</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>15360</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid XLS</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):7354-7376, (IND):7378, (24-28):7380-7384</span></p></td>
+    </tr>
+    <tr> 
+      <td width=46> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>10</span></p></td>
+      <td width=146> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt;font-family:"Courier New"'>test.ppt</span></p></td>
+      <td width=256> <pre
+  style='text-align:center'>99941c129cc8cfbadc15c55086982efc</pre></td>
+      <td width=48 valign=top> <pre
+  style='text-align:center'>17408</pre></td>
+      <td width=125> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>A valid PPT</span></p></td>
+      <td width=525 valign=top> <p class=MsoNormal align=center style='text-align:center;'><span
+  style='font-size:10.0pt'>(0-22):7386-7408, (IND):7410, (24-32):7412-7420</span></p></td>
+    </tr>
+  </table>
+</div>
+<h3>Author</h3>
+Nick Mikus (nick.mikus at gmail.com) created the test cases and the test image. 
+This test was released on March 14, 2005. 
+<h3>Disclaimers</h3>
+<p> This is a simple test case I composed when testing data carving tools. It 
+  is by no means all inclusive.</p>
+
+<hr>
+<table width="100%" border=0>
+<tr width="100%">
+
+  <td width="33%" align=left>
+  &nbsp;
+  </td>
+  <td width="33%" align="center">
+<a href='http://sourceforge.net'>
+    <img src='http://sourceforge.net/sflogo.php?group_id=105411&amp;type=2'
+    width=80  border=0 alt='SourceForge Logo'>
+
+</a>
+  </td>
+  <td width="33%" align=right>
+    <font size="1">Last Updated: March 14, 2005</font>
+  </td>
+</tr>
+</table>
+</body></html>
