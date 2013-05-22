@@ -1,7 +1,5 @@
-CC = g++
-CCFLAGS = -g
-
-EXEC=GramClass
+CC=g++
+CCFLAGS=-g -Wall -Wextra -ansi -pedantic
 
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:.cpp=.o)
@@ -9,19 +7,19 @@ HEAD=$(wildcard *.hpp)
 
 EXEC=bin/FS-Analysis
 
-all: ${EXEC}
+all: $(EXEC)
 
 clean:
-	@rm -f  ${OBJ}
+	@rm -f  $(OBJ)
 
 distclean : clean
-	@rm -f  ${EXEC}
+	@rm -f  $(EXEC)
 
 
-${EXEC}: ${OBJ}
-	${CC} ${OBJ} -o ${EXEC} 
+$(EXEC): $(OBJ)
+	@$(CC) $(OBJ) -o $(EXEC) 
 
 
-.o: .cpp
-	@${CC} ${CCFLAGS} -c $< -o $@
+%o: %cpp
+	@$(CC) -o $@ -c $< $(CCFLAGS)
 
