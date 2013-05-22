@@ -5,3 +5,7 @@ obj/
 
 *.swp
 *.o
+*.log
+*.gz
+*.toc
+*.aux
