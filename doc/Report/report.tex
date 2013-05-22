@@ -60,10 +60,19 @@ Les Nombres sont tous écris en BIG Endian dans la mémoire, ainsi, 0x0002 par e
 \end{verbatim}
 
 16 seconds octets :\\
-1 Octet : 02 :Nombre de FATs sur le disque\\
+1 Octet : 02 : Nombre de FATs sur le disque\\
 2 Octets : e0 00 : Taille du répertoire racine en nombre d'entrées.\\
 2 Octets : 40 0b : Nombre total de secteurs 16-bit.\\
-1 Octet : f0 : Type de disque (0xF8 pour les disques durs, 0xF0 pour les disquettes).\\
+1 Octet : f0 : Type de disque \\
+F0     2,88 Mo    3,5 pouces, 2 faces, 36 secteurs\\
+F0     1,44 Mo    3,5 pouces, 2 faces, 18 secteurs\\
+F9     720 Ko     3,5 pouces, 2 faces, 9 secteurs\\
+F9     1,2 Mo     5,25 pouces, 2 faces, 15 secteurs\\
+FD     360 Ko     5,25 pouces, 2 faces, 9 secteurs\\
+FF     320 Ko     5,25 pouces, 2 faces, 8 secteurs\\
+FC     180 Ko     5,25 pouces, 1 face, 9 secteurs\\
+FE     160 Ko     5,25 pouces, 1 face, 8 secteurs\\
+F8     -----      Disque dur\\
 2 Octets : 09 00 : Taille d'une FAT en secteurs.\\
 2 Octets : 12 00 : Nombre de secteurs par piste.\\
 2 Octets : 02 00 : Nombre de têtes.\\
@@ -120,7 +129,7 @@ Spécifiques aux FAT12 - FAT16 : \\
 \end{verbatim}
 
 16 seconds octets :\\
-1 Octet : 02 :Nombre de FATs sur le disque (2 par défaut)\\
+1 Octet : 02 : Nombre de FATs sur le disque (2 par défaut)\\
 2 Octets : 00 00 : Taille du répertoire racine en nombre d'entrées.\\
 2 Octets : 00 00 : Nombre total de secteurs 16-bit.\\
 1 Octet : f8 : Type de disque (0xF8 pour les disques durs, 0xF0 pour les disquettes).\\
@@ -162,8 +171,8 @@ Spécifiques aux FAT32 : \\
 \newpage
 
 \section{FAT 12}
-La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster \\
-Comme indiqué dans le nom, la FAT12 utilise des entrées de 12 bits.
+La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster.
+Comme indiqué dans le nom, la FAT12 utilise des entrées de 12 bits. \\
 Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant : \\
 0x000 : Le cluster est vide.\\
 0x001 : Le cluster est réservé.\\
@@ -172,8 +181,8 @@ Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant 
 0xFF7 : Mauvais cluster.\\
 0xFF8 - 0xFFF : Le cluster contient la fin d'un fichier.\\
 \section{FAT 16}
-La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster \\
-Comme indiqué dans le nom, la FAT16 utilise des entrées de 16 bits.
+La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster.
+Comme indiqué dans le nom, la FAT16 utilise des entrées de 16 bits. \\
 Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant : \\
 0x0000 : Le cluster est vide.\\
 0x0001 : Le cluster est réservé.\\
@@ -183,8 +192,8 @@ Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant 
 0xFFF8 - 0xFFFF : Le cluster contient la fin d'un fichier.\\
 
 \section{FAT 32}
-La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster \\
-Comme indiqué dans le nom, la FAT32 utilise des entrées de 32 bits.
+La File Allocation Table va indiquer quels sont les clusters utilisés par les fichiers, et de quel façon le fichier a été découpé s'il est plus gros qu'un cluster.
+Comme indiqué dans le nom, la FAT32 utilise des entrées de 32 bits.\\
 Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant : \\
 0x00000 : Le cluster est vide.\\
 0x00001 : Le cluster est réservé.\\
@@ -193,9 +202,43 @@ Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant 
 0xFFFF7 : Mauvais cluster.\\
 0xFFFF8 - 0xFFFFF : Le cluster contient la fin d'un fichier.\\
 
+\section{Root Directory}
+Après les FAT viendra la liste d'entrée du répertoire principal, chaque entrées étant réparties sur 32 bits de la façon suivante : \\
+8 Octets : 4d 4f 56 49 45 2d 7e 31 : Nom du fichier\\
+3 Octets : 33 47 50 : Extension du fichier\\
+1 Octet : 20 : Attributs du fichier\\
+Fonctionne par masque, un fichier peut avoir 0x03 = 0000 0011 = 0x01 + 0x02\\
+0x01	Lecture seule\\
+0x02	Fichier caché\\
+0x04	Fichier système\\
+0x08	Nom du volume\\
+0x10	Sous-répertoire\\
+0x20	Archive\\
+0x40	Device (utilisé en interne, jamais sur disque)\\
+0x80	Inutilisé\\
+0x0F est utilisé pour désigner un nom de fichier long.\\
+1 Octet : 00 : Réservé, utilisé par NT\\
+1 Octet : 00 : Heure de création : par unité de 10ms (de 0 à 199)\\
+2 Octets : e2 72 : Heure de création
+\begin{verbatim}
+000026c0 | 4d 4f 56 49 45 2d 7e 31 | 33 47 50 20 00 00 e2 72    |MOVIE-~13GP ...r|
+000026d0 | b6 42 b6 42 00 00 d7 72 | b6 42 05 00 76 d3 00 00    |.B.B...r.B..v...|
+\end{verbatim} 
+2 Octets : b6 42 : Date de création\\
+2 Octets : b6 42 : Date du dernier accès\\
+2 Octets : 00 00 : \\
+FAT12/16 : Index EA, utilisé par OS/2 et NT\\
+FAT32 : premier cluster du fichier, octet de poids faible \\
+2 Octets : d7 72 : Heure de dernière modification\\
+2 Octets : b6 42 : Date de dernière modification \\
+2 Octets : 05 00 : \\
+FAT12/16 : Numéros du premier cluster du fichier\\
+FAT32 : Cluster du fichier, octets de poids fort \\
+4 Octets : 76 d3 00 00  : Taille du fichier \\
+\section{Cas des noms de fichier long}
+
 
 \chapter{NTS}
-
 
 \chapter{EXT}
 
@@ -205,6 +248,15 @@ Les valeurs prisent dans la FAT peuvent prendre différentes valeurs, indiquant 
 
 \section{EXT 4}
 
-
-
+\appendix
+\chapter{Calcul de Date / Heure}
+Le calcul d'une date s'effectue sur 2 octets de la façon suivante : \\
+Les 2 octets sont reformés en 32 bits tels que : \\
+Bits 15-9 : Année - 1980 \\
+Bits 18-5 : Mois \\
+Bits 0-4 : Jour \\
+L'heure fonctionne de façon très similaire sur 32 bits : \\
+Bits 15-11 : Heures \\
+Bits 10-5 : Minutes \\
+Bits 0-4 : Secondes/2 \\
 \end{document}
