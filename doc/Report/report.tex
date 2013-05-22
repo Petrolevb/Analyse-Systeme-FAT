@@ -13,7 +13,7 @@
 % \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
 
 
-\title{File System Analysis and Comprehension}
+\title{Compréhension et analyse des systèmes de fichiers}
 \author{BELLEC Vincent \and PetroleVB}
 
 \begin{document}
@@ -235,9 +235,29 @@ FAT32 : premier cluster du fichier, octet de poids faible \\
 FAT12/16 : Numéros du premier cluster du fichier\\
 FAT32 : Cluster du fichier, octets de poids fort \\
 4 Octets : 76 d3 00 00  : Taille du fichier \\
+\newpage
+
 \section{Cas des noms de fichier long}
+Les entrées à long nom sont écrites dans la mémoires de la façon suivante : \\
+Ces entrées sont marquées des attribut nom de volume, système, caché, lecture seule (valeur 0x0F) a l'ofset numéros 12.\\
+1 Octet : 42, 01 : Ordre dans la séquence. Si contient le bit de masque 0x40, indique qu'il s'agit de la dernière entrée de ce nom. \\
+10 Octets : 2e 00 64 00 6f 00 63 00 00 00 : Nom du fichier, 5 caractères\\
+1 Octet : Attribut spécial, 0x0F\\
+1 Octet : réservé, utilisé par NT\\
+1 Octet : Heure de création, par unité de 10ms\\
+12 Octets : Nom du fichier, 6 carractères\\
+2 Octets : par soucis de compatibilité, mis à 0 \\
+4 Octets : Nom du fichier, 2 carractères\\
+\begin{verbatim}
+0001f200 | 42 2e 00 64 00 6f 00 63 | 00 00 00 0f 00 c0 ff ff    |B..d.o.c........|
+0001f210 | ff ff ff ff ff ff ff ff | ff ff 00 00 ff ff ff ff    |................|
 
+0001f220 | 01 32 00 30 00 30 00 33 | 00 5f 00 0f 00 c0 64 00    |.2.0.0.3._....d.|
+0001f230 | 6f 00 63 00 75 00 6d 00 | 65 00 00 00 6e 00 74 00    |o.c.u.m.e...n.t.|
 
+0001f240 | 32 30 30 33 5f 44 7e 31 | 44 4f 43 20 00 00 39 6b    |2003_D~1DOC ..9k|
+0001f250 | 69 32 69 32 00 00 39 6b | 69 32 02 00 00 4e 00 00    |i2i2..9ki2...N..|
+\end{verbatim}
 \chapter{NTS}
 
 \chapter{EXT}
