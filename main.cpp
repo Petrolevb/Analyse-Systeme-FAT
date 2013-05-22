@@ -1,7 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-
+#include<vector>
 #include"fichier.hpp"
 
 using namespace std;
@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
         cout << "Usage : " << argv[0] << " file" << endl;
         return 1;
     }
+    vector<Fichier> filesRed;
     cout << "Opening " << argv[1] << endl;
     fstream ifs (argv[1], ios::in | ios::binary);
     if(ifs.fail())
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
     unsigned char buffer[SIZE_ENTRY];
     while(ifs.tellg() < 0x1f5f0)
     {
+        Fichier newFile;
         if(!ifs.read(reinterpret_cast<char *>(&buffer[0]), SIZE_ENTRY))
         {
             cerr << "Error reading file " << endl;
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
             return 2;
         }
 
-        cout << "Data at this point " << hex << ifs.tellg() << " : ";
+        cout << "Data at this point " << hex << ifs.tellg() << dec << " : ";
         bool deletedFile = buffer[0] == DELETED_FILE ;
         bool longName = buffer[11] == LONG_NAME;
         int numberLongEntry = 0;
@@ -82,18 +84,34 @@ int main(int argc, char *argv[])
         else            cout << "                > ";
 
         if (longName)
-            cout << "long : " << name ; 
+        {
+            cout << "long : " << name ;
+            newFile.setLongName(name);
+            /*
+            * We now reach the end of the "long name entries" part
+            * So we can continue with the next entry, 
+            * That will be the "short entry" of that file
+            */
+        }
         else
         {
             int i = 0;
+            string tmp = "";
             if(deletedFile) { cout << "."; i++; }
-            for(; i < 8; i++) cout << buffer[i];
-            cout << "." ;
-            for(; i < 12; i++) cout << buffer[i];
+            for(; i < 8; i++) tmp += buffer[i];
+            newFile.setShortName(tmp);
+            
+            cout << tmp << "." ;
+            tmp = "";
+            for(; i < 12; i++) tmp += buffer[i];
+            newFile.setExtension(tmp);
+            cout << tmp;
         }
         cout << endl;
-
+        filesRed.push_back(newFile);
     }
     ifs.close();
+
+    cout << "Total file : " << filesRed.size() << endl;
     return 0;
 }
