@@ -92,24 +92,30 @@ int main(int argc, char *argv[])
             * So we can continue with the next entry, 
             * That will be the "short entry" of that file
             */
+            if(!ifs.read(reinterpret_cast<char *>(&buffer[0]), SIZE_ENTRY))
+            {
+                cerr << "Error reading file " << endl;
+                ifs.close();
+                return 2;
+            }
+            cout << endl << "\t";
         }
-        else
-        {
-            int i = 0;
-            string tmp = "";
-            if(deletedFile) { cout << "."; i++; }
-            for(; i < 8; i++) tmp += buffer[i];
-            newFile.setShortName(tmp);
-            
-            cout << tmp << "." ;
-            tmp = "";
-            for(; i < 12; i++) tmp += buffer[i];
-            newFile.setExtension(tmp);
-            cout << tmp;
-        }
-        cout << endl;
+        int i = 0;
+        string tmp = "";
+        if(deletedFile) { cout << "."; i++; }
+        for(; i < 8; i++) tmp += buffer[i];
+        newFile.setShortName(tmp);
+         
+        cout << tmp << "." ;
+        tmp = "";
+        for(; i < 12; i++) tmp += buffer[i];
+        newFile.setExtension(tmp);
+        cout << tmp;
+        
+        cout << endl << endl;
         filesRed.push_back(newFile);
-    }
+    } // Loop of binary reading
+
     ifs.close();
 
     cout << "Total file : " << filesRed.size() << endl;
