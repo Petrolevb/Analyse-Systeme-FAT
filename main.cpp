@@ -45,9 +45,21 @@ int main(int argc, char *argv[])
         cout << "Data at this point " << hex << ifs.tellg() << dec << " : ";
         bool deletedFile = buffer[0] == DELETED_FILE ;
         bool longName = buffer[11] == LONG_NAME;
+        
+        if(deletedFile)
+        {
+            longName = (
+                buffer[10] == 0x00 && buffer[11] == 0x00 && buffer[12] == 0x00 &&
+                buffer[26] == 0x00 && buffer[27] == 0x00);
+            newFile.setDeleted();
+        }
+
         int numberLongEntry = 0;
-        if(!deletedFile && longName)
+        if(longName)
+        {
             numberLongEntry = buffer[0] ^ LAST_LONG_ENTRY;
+            if(deletedFile) numberLongEntry = 1;
+        }
 
         // if there is some entry after that still contains the name
         string name = "";
@@ -77,6 +89,11 @@ int main(int argc, char *argv[])
                     ifs.close();
                     return 2;
                 }
+                // if this is a deleted file, we have to check another time if is it still
+                // a long name entry, or the short one
+                if(buffer[10] == 0x00 && buffer[11] == 0x00 && buffer[12] == 0x00 &&
+                    buffer[26] == 0x00 && buffer[27] == 0x00)
+                        numberLongEntry++;
         }
 
 

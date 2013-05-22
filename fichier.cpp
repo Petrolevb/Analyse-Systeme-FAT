@@ -4,6 +4,7 @@
 
 
 Fichier::Fichier()
+    : m_Deleted(false)
 { }
 Fichier::~Fichier() { }
 
