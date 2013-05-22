@@ -78,7 +78,14 @@ int main(int argc, char *argv[])
                     { endName = true; break; }
                     else tmp += buffer[i];
                 if(!endName) // same, we continue if we didn't end
-                { tmp += buffer[28]; tmp += buffer[30]; }
+                { 
+                    if(buffer[28] != 0x00) 
+                    {
+                        tmp += buffer[28]; 
+                        if(buffer[30] != 0x00) 
+                            tmp += buffer[30]; 
+                    }
+                }
 
                 numberLongEntry--;
                 name = tmp + name;
@@ -89,6 +96,7 @@ int main(int argc, char *argv[])
                     ifs.close();
                     return 2;
                 }
+
                 // if this is a deleted file, we have to check another time if is it still
                 // a long name entry, or the short one
                 if(buffer[10] == 0x00 && buffer[11] == 0x00 && buffer[12] == 0x00 &&
