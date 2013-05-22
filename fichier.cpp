@@ -15,3 +15,4 @@ string Fichier::toString()
         (m_Deleted ? "<deleted> " : "          ") +
         m_LongName + " (" + m_ShortName + "." + m_Extension + ")";
 }
+

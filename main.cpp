@@ -130,9 +130,27 @@ int main(int argc, char *argv[])
         tmp = "";
         for(; i < 12; i++) tmp += buffer[i];
         newFile.setExtension(tmp);
+
+        long firstCluster = 0x00000000;
+        firstCluster |= buffer[26];
+        firstCluster <<= 8;
+
+        firstCluster |= buffer[27];
+        firstCluster <<= 8;
         
+        if(buffer[20] != 0x00 && buffer[21] != 0x00)
+        {
+            firstCluster |= buffer[20];
+            firstCluster <<= 8;
+
+            firstCluster |= buffer[21];
+            firstCluster <<= 8;
+        }
+
+        newFile.addCluster(firstCluster);
         filesRed.push_back(newFile);
         cout << newFile.toString() << endl;
+        cout << "\t" << hex << "First cluster : " << firstCluster << dec << endl;
     } // Loop of binary reading
 
     ifs.close();
