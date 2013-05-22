@@ -6,6 +6,7 @@ class Fichier
     public :
         Fichier();
         ~Fichier();
+        std::string toString();
 
     // Getters & Setters
         std::string getLongName() { return m_LongName; }

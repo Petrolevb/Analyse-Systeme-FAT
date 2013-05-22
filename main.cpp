@@ -97,12 +97,8 @@ int main(int argc, char *argv[])
         }
 
 
-        if(deletedFile) cout << " [deleted file] > ";
-        else            cout << "                > ";
-
         if (longName)
         {
-            cout << "long : " << name ;
             newFile.setLongName(name);
             /*
             * We now reach the end of the "long name entries" part
@@ -115,22 +111,20 @@ int main(int argc, char *argv[])
                 ifs.close();
                 return 2;
             }
-            cout << endl << "\t";
         }
         int i = 0;
         string tmp = "";
-        if(deletedFile) { cout << "."; i++; }
+        if(deletedFile) 
+            i++;
         for(; i < 8; i++) tmp += buffer[i];
         newFile.setShortName(tmp);
          
-        cout << tmp << "." ;
         tmp = "";
         for(; i < 12; i++) tmp += buffer[i];
         newFile.setExtension(tmp);
-        cout << tmp;
         
-        cout << endl << endl;
         filesRed.push_back(newFile);
+        cout << newFile.toString() << endl;
     } // Loop of binary reading
 
     ifs.close();
@@ -138,3 +132,4 @@ int main(int argc, char *argv[])
     cout << "Total file : " << filesRed.size() << endl;
     return 0;
 }
+
