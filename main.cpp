@@ -2,6 +2,8 @@
 #include<fstream>
 #include<string>
 
+#include"fichier.hpp"
+
 using namespace std;
 
 #define SIZE_ENTRY 32
